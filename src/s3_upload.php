@@ -30,8 +30,13 @@ $s3 = new S3Client([
     'use_path_style_endpoint' => true,
 ]);
 
+
+$mime = mime_content_type($argv[2]);
+
 $s3->putObject([
     'Bucket' => $argv[1],
     'Key' => basename($argv[2]),
     'Body' =>  fopen($argv[2], 'r'),
+    'ContentType' => $mime, // if you want correct ContentType header to be sent on GET
+    'ACL' => 'public-read', // if you want public read for everyone, otherwise it's private
 ]);
